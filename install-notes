@@ -1,0 +1,106 @@
+*******
+Install Podcast Generator on Ubuntu 20.04 (work in progress - incomplete)
+Please read this through entirely before using.
+I note where these instructions become incomplete.
+My dialog with the maintainers can be found at
+https://github.com/PodcastGenerator/PodcastGenerator/issues/272
+*******
+
+Login via ssh:
+Open a terminal and type:
+ssh root@ip address
+
+create a system user:
+adduser "someusername"
+provide a password ( and complete the user info if desired )
+
+add the new user to the sudo group:
+usermod -aG sudo "someusername"
+
+login with user:
+su "someusername"
+
+add port 22 and 80 to the firewall rules and enable:
+sudo ufw allow 80
+sudo ufw allow 22
+sudo ufw enable
+sudo ufw status
+( You should see all active rules )
+
+update system:
+sudo apt update
+sudo apt upgrade
+
+Next I install PHP:
+sudo apt install php php-cli php-fpm php-json php-pdo php-mysql php-zip php-gd  php-mbstring php-curl php-xml php-pear php-bcmath
+
+confirm the PHP version:
+php --version
+(the oputput should look like
+PHP 7.2.24-0ubuntu0.18.04.6 (cli) (built: May 26 2020 13:09:11) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies
+    with Zend OPcache v7.2.24-0ubuntu0.18.04.6, Copyright (c) 1999-2018, by Zend Technologies)
+
+Install additional packages:
+sudo apt install php-gettext php-xml
+
+Navigate to the folder where PodcastGenerator will be installed:
+cd /var/www/html
+
+Remove index.html:
+sudo rm -rf index.html
+
+Download the latest release: (replace url with the current release)
+sudo wget https://github.com/albertobeta/PodcastGenerator/archive/v3.0.1.zip
+
+Add unzip to the the system:
+sudo apt install unzip
+
+Unzip PodcastGenerator:
+sudo unzip v3.0.1.zip ( replace with current release version )
+
+Move PodcastGenerator from the unzipped directory PodcastGenerator-3.0.1 to var/www/html:
+sudo mv /var/www/html/PodcastGenerator-3.0.1/PodcastGenerator /var/www/html
+
+Cleanup by removing unneccessary files:
+sudo rm -rf v3.0.1.zip
+sudo rm -rf PodcastGenerator-3.0.1
+
+Change ownership of the installation files:
+sudo chown -R www-data:www-data /var/www/html
+
+Change directory:
+cd /var/www/html/PodcastGenerator
+
+Change ownership of the following files:
+sudo chown -R www-data:www-data media/
+sudo chown -R www-data:www-data images/
+
+Change the permissions of the following files:
+sudo chmod 775 media/
+sudo chmod 775 images/
+sudo chmod -R 664 media
+sudo chmod -R 664 images
+
+Change ownership and permissions of the following files:
+*****************************************
+( config.php does not appear to exist on my system )
+*****************************************
+
+sudo chown www-data:www-data config.php
+sudo chmod 664 config.php
+
+Navigate to the IP address of the host machine in a browser:
+ip.address.in.browser/PodcastGenerator
+
+Select "Begin Installation"
+Select Language and submit
+
+My output is as follows:
+
+"Media is not writeable"
+"Images is not writeable"
+"Scripts is writeable"
+"Try to adjust file permissions"
+"Please reload this page, if you still see this page you need to adjust the permissions manually"
